@@ -8,4 +8,9 @@ public class crawlerEngine {
 
     Queue<String> q = new ConcurrentLinkedQueue<String>();
 
+    public void setQ(String link) {
+        q.add(link);
+    }
+
+
 }
