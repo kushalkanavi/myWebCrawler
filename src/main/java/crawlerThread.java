@@ -4,37 +4,42 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.*;
 
 /**
  * Created by kushalkanavi on 6/7/17.
  */
-public class crawlerThread implements Runnable{
 
+public class crawlerThread extends Thread{
+
+    crawlerEngine ce;
     String url;
-    List<String> l = new ArrayList<String>();
 
-    public crawlerThread(String url) {
-        this.url = url;
+    public crawlerThread(crawlerEngine Engine) {
+        ce = Engine;
     }
 
-    crawlerEngine ce = new crawlerEngine();
 
     public void run() {
+
+        url = ce.getUrl();
 
         try {
             Document document = Jsoup.connect(url).get();
             Elements linksonpage = document.select("a[href]");
 
-            for( int i=0;i<linksonpage.size();++i){
-                Element link = linksonpage.get(i);
-                System.out.println(link.attr("abs:href"));
+            addLinksToQueue(linksonpage);
 
-                ce.setQ(link.attr("abs:href"));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void addLinksToQueue(Elements el) {
+        for(Element e : el) {
+
+            String Link = e.attr("abs:href");
+            ce.addURL(Link);
         }
+        System.out.println(Thread.currentThread().getName()+"-"+ce.getQ());
     }
 }

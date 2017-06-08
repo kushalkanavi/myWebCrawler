@@ -3,12 +3,14 @@
  */
 public class Main {
 
-    public static void main(String[] args){
-        crawlerThread test = new crawlerThread("https://www.yahoo.com");
-        Thread t = new Thread(test);
+    public static void main(String[] args) throws InterruptedException {
 
-        for (int i=0; i<10;++i){
-            t.start();
+        crawlerEngine engine = new crawlerEngine("https://www.yahoo.com");
+
+        for (int i=0;i<10;++i){
+            Thread test =  new crawlerThread(engine);
+            test.start();
+            test.join();
         }
     }
 }
