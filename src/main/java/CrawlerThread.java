@@ -11,10 +11,10 @@ import java.io.IOException;
 
 public class CrawlerThread extends Thread{
 
-    CrawlerEngine ce;
+    CrawlerQueue ce;
     String url;
 
-    public CrawlerThread(CrawlerEngine Engine) {
+    public CrawlerThread(CrawlerQueue Engine) {
         ce = Engine;
     }
 

@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        CrawlerEngine engine = new CrawlerEngine("https://www.yahoo.com");
+        CrawlerQueue engine = new CrawlerQueue("https://www.yahoo.com");
 
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter Number of URL's to be crawled");

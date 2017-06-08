@@ -4,12 +4,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by kushalkanavi on 6/7/17.
  */
-public class CrawlerEngine {
+public class CrawlerQueue {
 
      Queue<String> q = new ConcurrentLinkedQueue<String>();
      String url;
 
-    public CrawlerEngine(String url) {
+    public CrawlerQueue(String url) {
         q.add(url);
     }
 
