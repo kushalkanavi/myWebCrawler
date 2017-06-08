@@ -9,12 +9,12 @@ import java.io.IOException;
  * Created by kushalkanavi on 6/7/17.
  */
 
-public class crawlerThread extends Thread{
+public class CrawlerThread extends Thread{
 
-    crawlerEngine ce;
+    CrawlerEngine ce;
     String url;
 
-    public crawlerThread(crawlerEngine Engine) {
+    public CrawlerThread(CrawlerEngine Engine) {
         ce = Engine;
     }
 
@@ -27,19 +27,15 @@ public class crawlerThread extends Thread{
             Document document = Jsoup.connect(url).get();
             Elements linksonpage = document.select("a[href]");
 
-            addLinksToQueue(linksonpage);
+            for(Element e : linksonpage) {
+
+                String Link = e.attr("abs:href");
+                ce.addURL(Link);
+            }
+            System.out.println(Thread.currentThread().getName()+"-"+ce.getQ());
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-    }
-
-    public void addLinksToQueue(Elements el) {
-        for(Element e : el) {
-
-            String Link = e.attr("abs:href");
-            ce.addURL(Link);
-        }
-        System.out.println(Thread.currentThread().getName()+"-"+ce.getQ());
     }
 }
