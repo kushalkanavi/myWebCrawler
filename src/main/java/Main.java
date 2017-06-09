@@ -1,22 +1,23 @@
-import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by kushalkanavi on 6/7/17.
  */
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public void run(String[] args) throws InterruptedException {
+        ExecutorService executer = Executors.newFixedThreadPool(10);
 
-        CrawlerQueue engine = new CrawlerQueue("https://www.yahoo.com");
+        CrawlerQueue queue = new CrawlerQueue("https://www.yahoo.com");
 
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter Number of URL's to be crawled");
-        int n = scan.nextInt();
-
-        for (int i=0;i<n;++i){
-            Thread test =  new CrawlerThread(engine);
-            test.start();
-            test.join();
+        for (int i=0; i<2; ++i) {
+            System.out.println("Starting thread " + i);
+            executer.execute(new CrawlerThread(queue));
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        new Main().run(args);
     }
 }

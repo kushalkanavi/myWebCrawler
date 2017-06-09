@@ -3,39 +3,48 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-
 /**
  * Created by kushalkanavi on 6/7/17.
  */
 
-public class CrawlerThread extends Thread{
+public class CrawlerThread implements Runnable {
+    private CrawlerQueue ce;
 
-    CrawlerQueue ce;
-    String url;
-
-    public CrawlerThread(CrawlerQueue Engine) {
-        ce = Engine;
+    public CrawlerThread(CrawlerQueue queue) {
+        this.ce = queue;
     }
 
 
     public void run() {
+        while(true) {
+            String url = ce.getUrl();
 
-        url = ce.getUrl();
-
-        try {
-            Document document = Jsoup.connect(url).get();
-            Elements linksonpage = document.select("a[href]");
-
-            for(Element e : linksonpage) {
-
-                String Link = e.attr("abs:href");
-                ce.addURL(Link);
+            if (url == null) {
+                try {
+                    Thread.sleep(10L);
+                } catch (InterruptedException e) {
+                    // No-op
+                }
+                continue;
             }
-            System.out.println(Thread.currentThread().getName()+"-"+ce.getQ());
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            System.out.println("Crawling : " + url);
+
+            try {
+                Document document = Jsoup.connect(url).get();
+                Elements linksonpage = document.select("a[href]");
+
+                for(Element e : linksonpage) {
+
+                    String Link = e.attr("abs:href");
+                    ce.addURL(Link);
+                }
+
+                System.out.println(Thread.currentThread().getName() + "-" + ce.getQ());
+
+            } catch (Exception e) {
+                // no-op
             }
+        }
     }
 }

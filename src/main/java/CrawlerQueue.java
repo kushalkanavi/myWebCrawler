@@ -24,13 +24,4 @@ public class CrawlerQueue {
     public String getUrl() {
         return q.poll();
     }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getPageLink(){
-        //url = q.poll();
-        return url;
-    }
 }
